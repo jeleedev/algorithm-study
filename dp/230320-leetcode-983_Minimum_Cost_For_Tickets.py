@@ -1,37 +1,28 @@
 '''
 https://leetcode.com/problems/minimum-cost-for-tickets/
+
+문제풀이 참고. https://mia-dahae.tistory.com/158
 '''
+def mincostTickets(self, days: List[int], costs: List[int]) -> int:
+    lastDay = days[len(days)-1]
+    isIncluded = [0 for i in range(lastDay+1)]
+    minCosts = [0 for i in range(lastDay+1)]
 
-# 풀이 1: 일반적인 재귀호출
-def fib(self, n: int) -> int:
-    if n < 2 : 
-        return n
-    return self.fib(n-1) + self.fib(n-2)
+    for day in days:
+        isIncluded[day] = True
 
-# 풀이 2: dict 사용
-def fib(self, n: int) -> int:
-    dic = dict()
+    for i in range(len(minCosts)):
+        if isIncluded[i] == False:
+            minCosts[i] = minCosts[i-1]
+            continue
+        
+        # day 1
+        one = minCosts[i-1]+costs[0]
+        # day 7
+        seven = minCosts[max(0, i-7)]+costs[1]
+        # day 30
+        thirty = minCosts[max(0, i-30)]+costs[2]
 
-    if n < 2:
-        return n
-
-    if n in dic:
-        return dic[n]
-
-    dic[n] = self.fib(n - 2) + self.fib(n - 1)
-
-    return dic[n]
-  
-# 풀이 3: defaultdict 사용
-dp = collections.defaultdict(int)
-
-def fib(self, n: int) -> int:
-    if n < 2:
-        return n
+        minCosts[i] = min(one, min(seven, thirty))
     
-    if self.dp[n]:
-        return self.dp[n]
-
-    self.dp[n] = self.fib(n-2) + self.fib(n-1)
-    
-    return self.dp[n]
+    return minCosts[lastDay]
